@@ -4,6 +4,8 @@
 #include "Subsystems/EasySettingsSubsystem.h"
 
 #include "Kismet/KismetSystemLibrary.h"
+#include "Libs/DataSerializerLib.h"
+#include "Libs/EasySettingsLib.h"
 
 void UEasySettingsSubsystem::SetSettingsQuality(ESettingsType InSettingsType, int32 InQuality, bool bApply)
 {
@@ -216,7 +218,85 @@ void UEasySettingsSubsystem::GetSupportedResolutions(TArray<FIntPoint>& OutResul
 	UKismetSystemLibrary::GetSupportedFullscreenResolutions(OutResult);
 }
 
+void UEasySettingsSubsystem::SetContainerValue(uint8 InCategory, float InValue, bool bApply)
+{
+	if (!IsValid(SettingsSetter))
+		return;
+	SettingsSetter->SetValue(InCategory, InValue);
+	if (bApply)
+		ApplySettings();
+}
+
 void UEasySettingsSubsystem::ApplySettings()
 {
 	GetGameUserSettings()->ApplySettings(true);
+	SaveContainer();
+}
+
+void UEasySettingsSubsystem::SaveContainer()
+{
+	if (!IsValid(SettingsSetter))
+		return;
+
+	// Prepare empty byte container
+	TArray<uint8> bytes;
+	FMemoryWriter writer(bytes);
+	
+	// Write bytes from settings
+	SettingsSetter->Write(writer);
+
+	// Save to file
+	FString path = GetContainerSavePath();
+	UDataSerializerLib::WriteBytesToDiskCompressed(bytes, path);
+}
+
+void UEasySettingsSubsystem::InitContainer()
+{
+	// Destroy previous container
+	if (IsValid(SettingsSetter))
+	{
+		SettingsSetter->ConditionalBeginDestroy();
+		SettingsSetter = nullptr;
+	}
+	// Create setter based on class from settings
+	TSubclassOf<UEasySettingsSetter> settingsSetterClass = UEasySettingsLib::GetSettingsSetterClass();
+	SettingsSetter = NewObject<UEasySettingsSetter>(this, settingsSetterClass);
+	SettingsSetter->InitializeEmpty();
+
+	// Try to read container from disk
+	FString path = GetContainerSavePath();
+	// File must exist
+	if (FPaths::FileExists(path))
+	{
+		// Read bytes from disk
+		TArray<uint8> fileBytes;
+		if (UDataSerializerLib::ReadCompressedBytesFromDisk(fileBytes, path))
+		{
+			// Fill settings data
+			FMemoryReader reader(fileBytes);
+			SettingsSetter->Read(reader);
+		}
+	}
+
+	// Save to disk again (create file if not created)
+	SaveContainer();
+}
+
+FString UEasySettingsSubsystem::GetContainerSavePath()
+{
+	FString folder = UEasySettingsLib::GetConfigPath();
+	FString name = UEasySettingsLib::GetContainerSaveName();
+	FString path = folder / name;
+	return path;
+}
+
+void UEasySettingsSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+	InitContainer();
+}
+
+void UEasySettingsSubsystem::Deinitialize()
+{
+	ApplySettings();
+	Super::Deinitialize();
 }

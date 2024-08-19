@@ -38,7 +38,8 @@ public class EasySettings : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"DeveloperSettings"
+				"DeveloperSettings",
+				"DataSerializer"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

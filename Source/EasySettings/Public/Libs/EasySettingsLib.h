@@ -29,6 +29,9 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
 	static TSubclassOf<UEasySettingsSetter> GetSettingsSetterClass();
+	
+	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
+	static FString GetContainerSaveName();
 
 	/**
 	 * @brief Retrieves the developer settings for the Easy Settings subsystem.
@@ -39,4 +42,71 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
 	static const UEasySettingsSubsystemDeveloperSettings* GetDeveloperSettings();
+
+	/**
+	 * @brief Retrieves the configuration path based on whether the editor is active or not.
+	 * 
+	 * This function returns the project configuration path if the editor is active (i.e., `IsWithEditor()` returns true). 
+	 * Otherwise, it returns the project directory path.
+	 * @see GetProjectConfigPath
+	 * @see GetProjectDir
+	 * @see IsWithEditor
+	 * 
+	 * @return The configuration path as a string. The path returned depends on whether the editor is running or not.
+	 */
+	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
+	static FString GetConfigPath();
+
+	/**
+	 * @brief Retrieves the path to the project's configuration directory.
+	 * 
+	 * Simply returns the result of `FPaths::ProjectConfigDir()`.
+	 * 
+	 * @return The project's configuration directory path as a string.
+	 */
+	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
+	static FString GetProjectConfigPath();
+
+	/**
+	 * @brief Retrieves the path to the project's root directory.
+	 * 
+	 * Simply returns the result of `FPaths::ProjectDir()`.
+	 * 
+	 * @return The project's root directory path as a string.
+	 */
+	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
+	static FString GetProjectDir();
+
+	/**
+	 * @brief Checks whether the editor is currently running.
+	 * 
+	 * Determined by the `WITH_EDITOR` macro.
+	 * 
+	 * @return True if the editor is running, false otherwise.
+	 */
+	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
+	static bool IsWithEditor();
+
+	/**
+	 * @brief Retrieves the version of the project.
+	 * 
+	 * Reads the project version from the configuration file specified by `GGameIni` and the section
+	 * `/Script/EngineSettings.GeneralProjectSettings`.
+	 * 
+	 * @return The project version as a string.
+	 */
+	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
+	static FString GetProjectVersion();
+
+	/**
+	 * @brief Converts a relative path to an absolute path.
+	 * 
+	 * If the provided path is already absolute, it is returned unchanged. Otherwise, it is converted to an absolute path 
+	 * using `FPaths::ConvertRelativePathToFull()`.
+	 * 
+	 * @param InRelativePath The relative path to convert.
+	 * @return The absolute path corresponding to the input relative path.
+	 */
+	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
+	static FString RelativePathToFull(FString InRelativePath);
 };

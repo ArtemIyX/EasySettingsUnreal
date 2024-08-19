@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Data/EasySettingsSetter.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "EasySettingsSubsystem.generated.h"
@@ -48,8 +49,18 @@ UCLASS(BlueprintType, Blueprintable)
 class EASYSETTINGS_API UEasySettingsSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
-
+protected:
+	UPROPERTY()
+	UEasySettingsSetter* SettingsSetter;
+protected:
+	void SaveContainer();
+	void InitContainer();
+	FString GetContainerSavePath();
 public:
+
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+	
 	/**
 	 * Sets the quality of a specific setting type.
 	 * 
@@ -268,12 +279,15 @@ public:
 	void GetSupportedResolutions(TArray<FIntPoint>& OutResult,
 	                             TEnumAsByte<EWindowMode::Type> InWindowMode = EWindowMode::Type::Windowed);
 
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Container")
+	void SetContainerValue(uint8 InCategory, float InValue, bool bApply = true);
+	
 	/**
 	* Applies the current settings, saving them to the user's configuration file.
 	*/
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Misc")
 	void ApplySettings();
-
+	
 	/**
 	* Retrieves the UGameUserSettings instance for this game, which manages user-specific graphics and performance settings.
 	* 
@@ -281,4 +295,6 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Misc")
 	UGameUserSettings* GetGameUserSettings() const { return GEngine->GameUserSettings; }
+
+
 };
