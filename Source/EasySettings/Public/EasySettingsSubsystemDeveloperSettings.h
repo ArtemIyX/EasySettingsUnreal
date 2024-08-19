@@ -6,6 +6,7 @@
 
 #include "EasySettingsSubsystemDeveloperSettings.generated.h"
 
+class UEasySettingsSetter;
 /**
  * 
  */
@@ -16,4 +17,7 @@ class EASYSETTINGS_API UEasySettingsSubsystemDeveloperSettings : public UDevelop
 
 public:
 	UEasySettingsSubsystemDeveloperSettings(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+public:
+	UPROPERTY(Config, EditAnywhere, BlueprintReadWrite, NoClear)
+	TSubclassOf<UEasySettingsSetter> SettingsSetterClass;
 };
