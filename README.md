@@ -6,7 +6,7 @@ A subsystem that extends and augments game settings, includes changing console v
 If your game needs to record custom variables of float format like FOV, sensitivity, music volume, brightness, etc. you can use methods of saving variables to a container.
 ```C++
 UEasySettingsSubsystem* subsystem = ...;
-subsystem->SetContainerValue(/*uint8 InCategory/* 10, /*float InValue*/ 52.0f, /*bool bApply*/)
+subsystem->SetContainerValue(/*uint8 InCategory/* 10, /*float InValue*/ 52.0f, /*bool bApply*/ true)
 ```
 ![Screenshot2](https://cdn.discordapp.com/attachments/1026083841791754250/1275424560677912576/image.png?ex=66c5d72f&is=66c485af&hm=b024f13b98fcd9701847a7922275a69b9a0eebed57f803738990c712529b8051&)
 The function writes data to disk, so make sure you have included all the dependencies listed below.
