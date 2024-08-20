@@ -8,7 +8,7 @@
 
 namespace EasySettings
 {
-	constexpr int32 VALUES_NUM = 256;
+	constexpr int32 VALUES_NUM = 254;
 	typedef uint8 MapKey;
 	typedef float MapValue;
 	typedef TMap<EasySettings::MapKey, EasySettings::MapValue> FContainer;
@@ -43,8 +43,8 @@ public:
 	 * 
 	 * @note This method is intended to be overridden in Blueprints.
 	 */
-	UFUNCTION(BlueprintNativeEvent)
-	void InitializeEmpty();
+	UFUNCTION()
+	virtual void InitializeEmpty();
 
 	/**
 	 * @brief Sets the float value for a specific category.

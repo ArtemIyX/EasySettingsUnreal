@@ -279,8 +279,34 @@ public:
 	void GetSupportedResolutions(TArray<FIntPoint>& OutResult,
 	                             TEnumAsByte<EWindowMode::Type> InWindowMode = EWindowMode::Type::Windowed);
 
+	/**
+	 * @brief Sets the container value for a specific category.
+	 *
+	 * This method sets the float value for a given category in the container. 
+	 * If the `bApply` flag is true, the settings are applied immediately after setting the value.
+	 *
+	 * @param InCategory The category key (`uint8`) for which to set the value.
+	 * @param InValue The float value to set for the category.
+	 * @param bApply If true, applies the settings immediately after setting the value.
+	 * 
+	 * @note This method is intended to be used within the GameSettingsSubsystem.
+	 */
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Container")
 	void SetContainerValue(uint8 InCategory, float InValue, bool bApply = true);
+
+	/**
+	 * @brief Retrieves the container value for a specific category.
+	 *
+	 * This method gets the float value for a given category in the container.
+	 *
+	 * @param InCategory The category key (`uint8`) for which to get the value.
+	 * @param OutValue A reference to store the retrieved float value.
+	 * @return true if the value was successfully retrieved; false otherwise.
+	 * 
+	 * @note This method is intended to be used within the GameSettingsSubsystem.
+	 */
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Container")
+	bool GetContainerValue(uint8 InCategory, float& OutValue);
 	
 	/**
 	* Applies the current settings, saving them to the user's configuration file.

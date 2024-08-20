@@ -3,7 +3,7 @@
 
 #include "Data/EasySettingsSetter.h"
 
-void UEasySettingsSetter::InitializeEmpty_Implementation()
+void UEasySettingsSetter::InitializeEmpty()
 {
 	Values.Empty();
 	int32 n = EasySettings::VALUES_NUM;

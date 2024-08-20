@@ -227,6 +227,13 @@ void UEasySettingsSubsystem::SetContainerValue(uint8 InCategory, float InValue, 
 		ApplySettings();
 }
 
+bool UEasySettingsSubsystem::GetContainerValue(uint8 InCategory, float& OutValue)
+{
+	if (!IsValid(SettingsSetter))
+		return false;
+	return SettingsSetter->GetValue(InCategory, OutValue);
+}
+
 void UEasySettingsSubsystem::ApplySettings()
 {
 	GetGameUserSettings()->ApplySettings(true);
@@ -241,7 +248,7 @@ void UEasySettingsSubsystem::SaveContainer()
 	// Prepare empty byte container
 	TArray<uint8> bytes;
 	FMemoryWriter writer(bytes);
-	
+
 	// Write bytes from settings
 	SettingsSetter->Write(writer);
 
@@ -261,7 +268,6 @@ void UEasySettingsSubsystem::InitContainer()
 	// Create setter based on class from settings
 	TSubclassOf<UEasySettingsSetter> settingsSetterClass = UEasySettingsLib::GetSettingsSetterClass();
 	SettingsSetter = NewObject<UEasySettingsSetter>(this, settingsSetterClass);
-	SettingsSetter->InitializeEmpty();
 
 	// Try to read container from disk
 	FString path = GetContainerSavePath();
@@ -277,9 +283,12 @@ void UEasySettingsSubsystem::InitContainer()
 			SettingsSetter->Read(reader);
 		}
 	}
-
-	// Save to disk again (create file if not created)
-	SaveContainer();
+	else
+	{
+		SettingsSetter->InitializeEmpty();
+		// Save to disk again (create file if not created)
+		SaveContainer();
+	}
 }
 
 FString UEasySettingsSubsystem::GetContainerSavePath()
