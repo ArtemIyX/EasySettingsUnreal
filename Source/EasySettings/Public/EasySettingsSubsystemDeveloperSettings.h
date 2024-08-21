@@ -10,7 +10,7 @@ class UEasySettingsSetter;
 /**
  * 
  */
-UCLASS(Config=Editor, defaultconfig, meta = (DisplayName="Easy Settings"))
+UCLASS(Config=Game, defaultconfig, meta = (DisplayName="Easy Settings"))
 class EASYSETTINGS_API UEasySettingsSubsystemDeveloperSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
