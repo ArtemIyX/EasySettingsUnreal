@@ -176,6 +176,40 @@ void UEasySettingsSubsystem::SetShadowsQuality(int32 InValue, bool bApply)
 		ApplySettings();
 }
 
+void UEasySettingsSubsystem::SetOverallQualityLevel(int32 InValue, bool bApply)
+{
+	GetGameUserSettings()->SetOverallScalabilityLevel(InValue);
+	if (bApply)
+		ApplySettings();
+}
+
+int32 UEasySettingsSubsystem::GetOverallQualityLevel() const
+{
+	return GetGameUserSettings()->GetOverallScalabilityLevel();
+}
+
+void UEasySettingsSubsystem::SetScreenPercentage(int32 InValue, bool bApply)
+{
+	static auto ScreenPercentageVar = IConsoleManager::Get().FindConsoleVariable(TEXT("r.ScreenPercentage"));
+	if (ScreenPercentageVar)
+	{
+		ScreenPercentageVar->Set(InValue);
+	}
+	if (bApply)
+		ApplySettings();
+}
+
+int32 UEasySettingsSubsystem::GetScreenPercentage() const
+{
+	static const auto ScreenPercentageVar = IConsoleManager::Get().FindConsoleVariable(TEXT("r.ScreenPercentage"));
+	if (ScreenPercentageVar)
+	{
+		int32 screenPercentage = ScreenPercentageVar->GetInt();
+		return screenPercentage;
+	}
+	return 100.0f;
+}
+
 int32 UEasySettingsSubsystem::GetShadowsQuality() const
 {
 	return GetGameUserSettings()->GetShadowQuality();
@@ -227,11 +261,21 @@ void UEasySettingsSubsystem::SetContainerValue(uint8 InCategory, float InValue, 
 		ApplySettings();
 }
 
-bool UEasySettingsSubsystem::GetContainerValue(uint8 InCategory, float& OutValue)
+void UEasySettingsSubsystem::GetContainerValue(uint8 InCategory, float& OutValue, bool& bDefault)
 {
 	if (!IsValid(SettingsSetter))
-		return false;
-	return SettingsSetter->GetValue(InCategory, OutValue);
+		return;
+	SettingsSetter->GetValue(InCategory, OutValue, bDefault);
+}
+
+void UEasySettingsSubsystem::ResetContainerValue(uint8 InCategory, bool bApply)
+{
+	if (!IsValid(SettingsSetter))
+		return;
+	SettingsSetter->ResetValue(InCategory);
+
+	if (bApply)
+		ApplySettings();
 }
 
 void UEasySettingsSubsystem::ApplySettings()

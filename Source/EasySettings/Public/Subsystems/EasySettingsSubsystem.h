@@ -214,6 +214,46 @@ public:
 	void SetShadowsQuality(int32 InValue, bool bApply = true);
 
 	/**
+	 * Sets the Overall quality level.
+	 *
+	 * @param InValue The quality level to set (typically 0 to 4).
+	 * @param bApply Whether to immediately apply the setting.
+	 */
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	void SetOverallQualityLevel(int32 InValue, bool bApply = true);
+
+	/**
+	 * Retrieves the current Overall quality level.
+	 * 
+	 * @return The current Overall quality level.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameSettingsSubsystem|Graphics|Extra")
+	int32 GetOverallQualityLevel() const;
+	
+	/**
+	 * @brief Sets the screen percentage scaling factor for rendering.
+	 * 
+	 * This function allows modifying the `r.ScreenPercentage` console variable, 
+	 * which controls the resolution scale of the rendered scene.
+	 * 
+	 * @param InValue The desired screen percentage (default is 100).
+	 * @param bApply If true, applies the new value immediately (default is true).
+	 */
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	void SetScreenPercentage(int32 InValue = 100, bool bApply = true);
+
+	/**
+	 * @brief Retrieves the current screen percentage scaling factor.
+	 * 
+	 * This function reads the value of the `r.ScreenPercentage` console variable, 
+	 * which determines the resolution scale used for rendering.
+	 * 
+	 * @return The current screen percentage value.
+	 */
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	int32 GetScreenPercentage() const;
+	
+	/**
 	 * Retrieves the current Shadows quality level.
 	 * 
 	 * @return The current Shadows quality level.
@@ -306,7 +346,11 @@ public:
 	 * @note This method is intended to be used within the GameSettingsSubsystem.
 	 */
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Container")
-	bool GetContainerValue(uint8 InCategory, float& OutValue);
+	void GetContainerValue(uint8 InCategory, float& OutValue,
+		bool& bDefault);
+
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Container")
+	void ResetContainerValue(uint8 InCategory, bool bApply = true);
 	
 	/**
 	* Applies the current settings, saving them to the user's configuration file.

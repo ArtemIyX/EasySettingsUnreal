@@ -6,11 +6,26 @@
 #include "UObject/Object.h"
 #include "EasySettingsSetter.generated.h"
 
+USTRUCT(Blueprintable, BlueprintType)
+struct EASYSETTINGS_API FEasySettingsContainerValue
+{
+	GENERATED_BODY()
+
+public:
+	FEasySettingsContainerValue();
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool bDefaultValue;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float Value;
+};
+
 namespace EasySettings
 {
 	constexpr int32 VALUES_NUM = 254;
 	typedef uint8 MapKey;
-	typedef float MapValue;
+	typedef FEasySettingsContainerValue MapValue;
 	typedef TMap<EasySettings::MapKey, EasySettings::MapValue> FContainer;
 }
 
@@ -60,6 +75,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void SetValue(uint8 InCategory, float InValue);
 
+	UFUNCTION(BlueprintNativeEvent)
+	void ResetValue(uint8 InCategory);
+	
 	/**
 	 * @brief Retrieves the float value associated with a specific category.
 	 * 
@@ -71,8 +89,8 @@ public:
 	 * @return true if the category exists and the value is retrieved successfully.
 	 * @return false if the category does not exist.
 	 */
-	UFUNCTION()
-	virtual bool GetValue(uint8 InCategory, float& OutValue);
+	virtual bool GetValue(uint8 InCategory, float& OutValue,
+		bool& bOutDefault);
 
 	/**
 	 * @brief Reads and deserializes float values from a memory stream.

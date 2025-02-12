@@ -3,6 +3,12 @@
 
 #include "Data/EasySettingsSetter.h"
 
+FEasySettingsContainerValue::FEasySettingsContainerValue()
+{
+	bDefaultValue = true;
+	Value = 0.0f;
+}
+
 void UEasySettingsSetter::InitializeEmpty()
 {
 	Values.Empty();
@@ -10,7 +16,7 @@ void UEasySettingsSetter::InitializeEmpty()
 	Values.Reserve(n);
 	for (uint8 i = 0; i < n; ++i)
 	{
-		Values.Add(i, 0.0f);
+		Values.Add(i, FEasySettingsContainerValue());
 	}
 }
 
@@ -20,16 +26,29 @@ void UEasySettingsSetter::SetValue_Implementation(uint8 InCategory, float InValu
 	{
 		return;
 	}
-	Values[InCategory] = InValue;
+	Values[InCategory].bDefaultValue = false;
+	Values[InCategory].Value = InValue;
 }
 
-bool UEasySettingsSetter::GetValue(uint8 InCategory, float& OutValue)
+void UEasySettingsSetter::ResetValue_Implementation(uint8 InCategory)
+{
+	if(Values.Contains(InCategory))
+	{
+		Values[InCategory].bDefaultValue = true;
+		Values[InCategory].Value = 0.0f;
+	}
+}
+
+bool UEasySettingsSetter::GetValue(uint8 InCategory, float& OutValue, bool& bOutDefault)
 {
 	if (!Values.Contains(InCategory))
 	{
+		OutValue = 0.0f;
+		bOutDefault = true;
 		return false;
 	}
-	OutValue = Values[InCategory];
+	OutValue = Values[InCategory].Value;
+	bOutDefault = Values[InCategory].bDefaultValue;
 	return true;
 }
 
@@ -40,9 +59,12 @@ void UEasySettingsSetter::Read(FMemoryReader& MemoryReader)
 	// Read each element
 	for (uint8 i = 0; i < n; ++i)
 	{
+		bool bDefault;
+		MemoryReader << bDefault;
 		float elementValue;
 		MemoryReader << elementValue;
-		Values[i] = elementValue;
+		Values[i].bDefaultValue = bDefault == 1;
+		Values[i].Value = elementValue;
 	}
 }
 
@@ -51,8 +73,11 @@ void UEasySettingsSetter::Write(FMemoryWriter& MemoryWriter)
 	int n = EasySettings::VALUES_NUM;
 	check((Values.Num() == n));
 	// Write each float element
-	for (TTuple<uint8, float> el : Values)
+	for (const TTuple<EasySettings::MapKey, EasySettings::MapValue>& pair : Values)
 	{
-		MemoryWriter << el.Value;
+		bool bDefault = pair.Value.bDefaultValue;
+		MemoryWriter << bDefault;
+		float value = pair.Value.Value;
+		MemoryWriter << value;
 	}
 }
