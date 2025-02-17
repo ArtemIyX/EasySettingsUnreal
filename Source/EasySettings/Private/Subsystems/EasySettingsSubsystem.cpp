@@ -284,6 +284,11 @@ void UEasySettingsSubsystem::ApplySettings()
 	SaveContainer();
 }
 
+void UEasySettingsSubsystem::ApplyContainer()
+{
+	SaveContainer();
+}
+
 void UEasySettingsSubsystem::SaveContainer()
 {
 	if (!IsValid(SettingsSetter))

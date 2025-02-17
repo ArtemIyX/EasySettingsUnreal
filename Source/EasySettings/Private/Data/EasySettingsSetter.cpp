@@ -32,7 +32,7 @@ void UEasySettingsSetter::SetValue_Implementation(uint8 InCategory, float InValu
 
 void UEasySettingsSetter::ResetValue_Implementation(uint8 InCategory)
 {
-	if(Values.Contains(InCategory))
+	if (Values.Contains(InCategory))
 	{
 		Values[InCategory].bDefaultValue = true;
 		Values[InCategory].Value = 0.0f;
@@ -57,21 +57,25 @@ void UEasySettingsSetter::Read(FMemoryReader& MemoryReader)
 	InitializeEmpty();
 	int32 n = EasySettings::VALUES_NUM;
 	// Read each element
+	FString containerDebug;
 	for (uint8 i = 0; i < n; ++i)
 	{
 		bool bDefault;
 		MemoryReader << bDefault;
 		float elementValue;
 		MemoryReader << elementValue;
-		Values[i].bDefaultValue = bDefault == 1;
+		Values[i].bDefaultValue = bDefault;
 		Values[i].Value = elementValue;
+		containerDebug += FString::Printf(TEXT("[%d] %.2f def:%s\n"),
+		                                  i, elementValue, bDefault ? TEXT("True") : TEXT("False"));
 	}
+	UE_LOG(LogTemp, Warning, TEXT("container:\n %s"), *containerDebug);
 }
 
 void UEasySettingsSetter::Write(FMemoryWriter& MemoryWriter)
 {
 	int n = EasySettings::VALUES_NUM;
-	check((Values.Num() == n));
+	check((Values.Num() == n))
 	// Write each float element
 	for (const TTuple<EasySettings::MapKey, EasySettings::MapValue>& pair : Values)
 	{

@@ -357,6 +357,12 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Misc")
 	void ApplySettings();
+
+	/**
+	* Applies the current container values, saving them to the user's configuration file.
+	*/
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Misc")
+	void ApplyContainer();
 	
 	/**
 	* Retrieves the UGameUserSettings instance for this game, which manages user-specific graphics and performance settings.
