@@ -22,11 +22,20 @@ void UEasySettingsSubsystem::SetSettingsQuality(ESettingsType InSettingsType, in
 	case ESettingsType::TYPE_Effects:
 		SetEffectsQuality(InQuality, bApply);
 		break;
-	case ESettingsType::TYPE_Details:
-		SetDetailsQuality(InQuality, bApply);
-		break;
 	case ESettingsType::TYPE_Shadows:
 		SetShadowsQuality(InQuality, bApply);
+		break;
+	case ESettingsType::TYPE_Foliage:
+		SetFoliageQuality(InQuality, bApply);
+		break;
+	case ESettingsType::TYPE_Reflection:
+		SetReflectionQuality(InQuality, bApply);
+		break;
+	case ESettingsType::TYPE_GlobalIllumination:
+		SetGlobalIlluminationQuality(InQuality, bApply);
+		break;
+	case ESettingsType::TYPE_ViewDistance:
+		SetViewDistanceQuality(InQuality, bApply);
 		break;
 	default: ;
 	}
@@ -41,8 +50,11 @@ int32 UEasySettingsSubsystem::GetSettingsQuality(ESettingsType InSettingsType) c
 	case ESettingsType::TYPE_AA: return GetAntialiasingQuality();
 	case ESettingsType::TYPE_Textures: return GetTextureQuality();
 	case ESettingsType::TYPE_Effects: return GetEffectsQuality();
-	case ESettingsType::TYPE_Details: return GetDetailsQuality();
 	case ESettingsType::TYPE_Shadows: return GetShadowsQuality();
+	case ESettingsType::TYPE_Foliage: return GetFoliageQuality();
+	case ESettingsType::TYPE_Reflection: return GetReflectionQuality();
+	case ESettingsType::TYPE_GlobalIllumination: return GetGlobalIlluminationQuality();
+	case ESettingsType::TYPE_ViewDistance: return GetViewDistanceQuality();
 	default: return 0;
 	}
 }
@@ -117,7 +129,87 @@ int32 UEasySettingsSubsystem::GetEffectsQuality() const
 	return FMath::Min(values);
 }
 
-void UEasySettingsSubsystem::SetDetailsQuality(int32 InValue, bool bApply)
+void UEasySettingsSubsystem::SetFoliageQuality(int32 InValue, bool bApply)
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	settings->SetFoliageQuality(InValue);
+	if (bApply)
+		ApplySettings();
+}
+
+void UEasySettingsSubsystem::SetReflectionQuality(int32 InValue, bool bApply)
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	settings->SetReflectionQuality(InValue);
+	if (bApply)
+		ApplySettings();
+}
+
+void UEasySettingsSubsystem::SetAudioQualityLevel(int32 InValue, bool bApply)
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	settings->SetAntiAliasingQuality(InValue);
+	if (bApply)
+		ApplySettings();
+}
+
+void UEasySettingsSubsystem::SetGlobalIlluminationQuality(int32 InValue, bool bApply)
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	settings->SetGlobalIlluminationQuality(InValue);
+	if (bApply)
+		ApplySettings();
+}
+
+void UEasySettingsSubsystem::SetViewDistanceQuality(int32 InValue, bool bApply)
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	settings->SetViewDistanceQuality(InValue);
+	if (bApply)
+		ApplySettings();
+}
+
+int32 UEasySettingsSubsystem::GetFoliageQuality() const
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	return settings->GetFoliageQuality();
+}
+
+int32 UEasySettingsSubsystem::GetReflectionQuality() const
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	return settings->GetReflectionQuality();
+}
+
+int32 UEasySettingsSubsystem::GetAudioQualityLevel() const
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	return settings->GetAudioQualityLevel();
+}
+
+int32 UEasySettingsSubsystem::GetGlobalIlluminationQuality() const
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	return settings->GetGlobalIlluminationQuality();
+}
+
+int32 UEasySettingsSubsystem::GetViewDistanceQuality() const
+{
+	UGameUserSettings* settings = GetGameUserSettings();
+	check(IsValid(settings));
+	return settings->GetViewDistanceQuality();
+}
+
+/*void UEasySettingsSubsystem::SetDetailsQuality(int32 InValue, bool bApply)
 {
 	UGameUserSettings* settings = GetGameUserSettings();
 	check(IsValid(settings));
@@ -142,7 +234,7 @@ int32 UEasySettingsSubsystem::GetDetailsQuality() const
 		settings->GetViewDistanceQuality()
 	};
 	return FMath::Min(values);
-}
+}*/
 
 void UEasySettingsSubsystem::SetVsyncEnabled(bool bInValue, bool bApply)
 {

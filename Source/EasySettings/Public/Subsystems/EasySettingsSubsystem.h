@@ -28,15 +28,21 @@ enum class ESettingsType : uint8
 	/** Represents the Effects quality setting. */
 	TYPE_Effects UMETA(DisplayName="Effects"),
 
-	/** Represents the Details quality setting, including foliage, reflections, and other visual details. */
-	TYPE_Details UMETA(DisplayName="Details"),
-
 	/** Represents the Shadows quality setting. */
 	TYPE_Shadows UMETA(DisplayName="Shadows"),
+
+	TYPE_Foliage UMETA(DisplayName="Foliage"),
+
+	TYPE_Reflection UMETA(DisplayName="Reflection"),
+
+	TYPE_GlobalIllumination UMETA(DisplayName="Global Illumination"),
+
+	TYPE_ViewDistance UMETA(DisplayName="View Distance"),
 
 	/** Represents the maximum value for this enum, used internally. */
 	TYPE_MAX UMETA(Hidden)
 };
+
 
 /**
  * UEasySettingsSubsystem
@@ -69,7 +75,7 @@ public:
 	 * @param bApply Whether to immediately apply the setting.
 	 */
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
-	void SetSettingsQuality(ESettingsType InSettingsType = ESettingsType::TYPE_Details, int32 InQuality = 3,
+	void SetSettingsQuality(ESettingsType InSettingsType = ESettingsType::TYPE_Effects, int32 InQuality = 3,
 	                        bool bApply = true);
 
 	/**
@@ -79,7 +85,7 @@ public:
 	 * @return The current quality level of the specified setting.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameSettingsSubsystem|Graphics|Extra")
-	int32 GetSettingsQuality(ESettingsType InSettingsType = ESettingsType::TYPE_Details) const;
+	int32 GetSettingsQuality(ESettingsType InSettingsType = ESettingsType::TYPE_Effects) const;
 
 	/**
 	* Sets the Anti-Aliasing method.
@@ -153,12 +159,12 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameSettingsSubsystem|Graphics|Extra")
 	int32 GetEffectsQuality() const;
 
-	/**
+	/*/**
 	 * Sets the Details quality level, including foliage, reflections, and other visual details.
 	 * 
 	 * @param InValue The quality level to set (typically 0 to 4).
 	 * @param bApply Whether to immediately apply the setting.
-	 */
+	 #1#
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
 	void SetDetailsQuality(int32 InValue, bool bApply = true);
 
@@ -166,10 +172,39 @@ public:
 	* Retrieves the current Details quality level.
 	* 
 	* @return The current Details quality level.
-	*/
+	#1#
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
-	int32 GetDetailsQuality() const;
+	int32 GetDetailsQuality() const;*/
 
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	void SetFoliageQuality(int32 InValue, bool bApply = true);
+	
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	void SetReflectionQuality(int32 InValue, bool bApply = true);
+	
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	void SetAudioQualityLevel(int32 InValue, bool bApply = true);
+	
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	void SetGlobalIlluminationQuality(int32 InValue, bool bApply = true);
+	
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	void SetViewDistanceQuality(int32 InValue, bool bApply = true);
+
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	int32 GetFoliageQuality() const;
+	
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	int32 GetReflectionQuality() const;
+
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	int32 GetAudioQualityLevel() const;
+	
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	int32 GetGlobalIlluminationQuality() const;
+
+	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
+	int32 GetViewDistanceQuality() const;
 	/**
 	 * Enables or disables VSync.
 	 * 
