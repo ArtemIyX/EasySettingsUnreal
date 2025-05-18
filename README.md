@@ -27,6 +27,5 @@ UFUNCTION(BlueprintNativeEvent)
 - [DataSerializer](https://github.com/ArtemIyX/DataSerializerUnreal)
 
 ## Documentation
-Doxygen documentation: [GitHubPages](https://artemiyx.github.io/EasySettingsUnrealDoc/annotated.html)
-
-Documentation sources: [GitHub](https://github.com/ArtemIyX/EasySettingsUnrealDoc)
+- [MkDocs](https://artemiyx.github.io/riftborn-doc/plugins/easy-settings/)
+- [Doxygen](https://artemiyx.github.io/EasySettingsUnrealDoc/annotated.html)
