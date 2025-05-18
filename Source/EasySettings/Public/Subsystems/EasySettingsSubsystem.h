@@ -159,23 +159,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameSettingsSubsystem|Graphics|Extra")
 	int32 GetEffectsQuality() const;
 
-	/*/**
-	 * Sets the Details quality level, including foliage, reflections, and other visual details.
-	 * 
-	 * @param InValue The quality level to set (typically 0 to 4).
-	 * @param bApply Whether to immediately apply the setting.
-	 #1#
-	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
-	void SetDetailsQuality(int32 InValue, bool bApply = true);
-
-	/**
-	* Retrieves the current Details quality level.
-	* 
-	* @return The current Details quality level.
-	#1#
-	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
-	int32 GetDetailsQuality() const;*/
-
 	UFUNCTION(BlueprintCallable, Category="GameSettingsSubsystem|Graphics|Extra")
 	void SetFoliageQuality(int32 InValue, bool bApply = true);
 	
