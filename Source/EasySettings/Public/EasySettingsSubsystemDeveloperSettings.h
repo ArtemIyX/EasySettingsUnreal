@@ -18,9 +18,13 @@ class EASYSETTINGS_API UEasySettingsSubsystemDeveloperSettings : public UDevelop
 public:
 	UEasySettingsSubsystemDeveloperSettings(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 public:
-	UPROPERTY(Config, EditAnywhere, BlueprintReadWrite, NoClear, Category="Container")
-	TSubclassOf<UEasySettingsSetter> SettingsSetterClass;
 
 	UPROPERTY(Config, EditAnywhere, BlueprintReadWrite, Category="Container")
+	bool bShouldUseContainer;
+	
+	UPROPERTY(Config, EditAnywhere, BlueprintReadWrite, NoClear, meta=(EditCondition="bShouldUseContainer"), Category="Container")
+	TSubclassOf<UEasySettingsSetter> SettingsSetterClass;
+
+	UPROPERTY(Config, EditAnywhere, BlueprintReadWrite, meta=(EditCondition="bShouldUseContainer"), Category="Container")
 	FString ContainerSaveName;
 };

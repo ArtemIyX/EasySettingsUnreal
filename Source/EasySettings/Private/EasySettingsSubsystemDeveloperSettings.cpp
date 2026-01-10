@@ -8,6 +8,7 @@
 UEasySettingsSubsystemDeveloperSettings::UEasySettingsSubsystemDeveloperSettings(
 	const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+	bShouldUseContainer = true;
 	SettingsSetterClass = UEasySettingsSetter::StaticClass();
 	ContainerSaveName = "Config.bin";
 }

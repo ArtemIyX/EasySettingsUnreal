@@ -13,6 +13,11 @@ FString UEasySettingsLib::GetContainerSaveName()
 	return GetDeveloperSettings()->ContainerSaveName;
 }
 
+bool UEasySettingsLib::ShouldUseContainer()
+{
+	return GetDeveloperSettings()->bShouldUseContainer;
+}
+
 const UEasySettingsSubsystemDeveloperSettings* UEasySettingsLib::GetDeveloperSettings()
 {
 	return GetDefault<UEasySettingsSubsystemDeveloperSettings>();

@@ -33,6 +33,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
 	static FString GetContainerSaveName();
 
+	UFUNCTION(BlueprintCallable, Category="UEasySettingsLib")
+	static bool ShouldUseContainer();
+
 	/**
 	 * @brief Retrieves the developer settings for the Easy Settings subsystem.
 	 * 

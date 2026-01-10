@@ -13,31 +13,31 @@ void UEasySettingsSubsystem::SetSettingsQuality(ESettingsType InSettingsType, in
 	check((InSettingsType != ESettingsType::TYPE_MAX));
 	switch (InSettingsType)
 	{
-	case ESettingsType::TYPE_AA:
-		SetAntialiasingQuality(InQuality, bApply);
-		break;
-	case ESettingsType::TYPE_Textures:
-		SetTextureQuality(InQuality, bApply);
-		break;
-	case ESettingsType::TYPE_Effects:
-		SetEffectsQuality(InQuality, bApply);
-		break;
-	case ESettingsType::TYPE_Shadows:
-		SetShadowsQuality(InQuality, bApply);
-		break;
-	case ESettingsType::TYPE_Foliage:
-		SetFoliageQuality(InQuality, bApply);
-		break;
-	case ESettingsType::TYPE_Reflection:
-		SetReflectionQuality(InQuality, bApply);
-		break;
-	case ESettingsType::TYPE_GlobalIllumination:
-		SetGlobalIlluminationQuality(InQuality, bApply);
-		break;
-	case ESettingsType::TYPE_ViewDistance:
-		SetViewDistanceQuality(InQuality, bApply);
-		break;
-	default: ;
+		case ESettingsType::TYPE_AA:
+			SetAntialiasingQuality(InQuality, bApply);
+			break;
+		case ESettingsType::TYPE_Textures:
+			SetTextureQuality(InQuality, bApply);
+			break;
+		case ESettingsType::TYPE_Effects:
+			SetEffectsQuality(InQuality, bApply);
+			break;
+		case ESettingsType::TYPE_Shadows:
+			SetShadowsQuality(InQuality, bApply);
+			break;
+		case ESettingsType::TYPE_Foliage:
+			SetFoliageQuality(InQuality, bApply);
+			break;
+		case ESettingsType::TYPE_Reflection:
+			SetReflectionQuality(InQuality, bApply);
+			break;
+		case ESettingsType::TYPE_GlobalIllumination:
+			SetGlobalIlluminationQuality(InQuality, bApply);
+			break;
+		case ESettingsType::TYPE_ViewDistance:
+			SetViewDistanceQuality(InQuality, bApply);
+			break;
+		default: ;
 	}
 }
 
@@ -47,15 +47,24 @@ int32 UEasySettingsSubsystem::GetSettingsQuality(ESettingsType InSettingsType) c
 	check((InSettingsType != ESettingsType::TYPE_MAX));
 	switch (InSettingsType)
 	{
-	case ESettingsType::TYPE_AA: return GetAntialiasingQuality();
-	case ESettingsType::TYPE_Textures: return GetTextureQuality();
-	case ESettingsType::TYPE_Effects: return GetEffectsQuality();
-	case ESettingsType::TYPE_Shadows: return GetShadowsQuality();
-	case ESettingsType::TYPE_Foliage: return GetFoliageQuality();
-	case ESettingsType::TYPE_Reflection: return GetReflectionQuality();
-	case ESettingsType::TYPE_GlobalIllumination: return GetGlobalIlluminationQuality();
-	case ESettingsType::TYPE_ViewDistance: return GetViewDistanceQuality();
-	default: return 0;
+		case ESettingsType::TYPE_AA:
+			return GetAntialiasingQuality();
+		case ESettingsType::TYPE_Textures:
+			return GetTextureQuality();
+		case ESettingsType::TYPE_Effects:
+			return GetEffectsQuality();
+		case ESettingsType::TYPE_Shadows:
+			return GetShadowsQuality();
+		case ESettingsType::TYPE_Foliage:
+			return GetFoliageQuality();
+		case ESettingsType::TYPE_Reflection:
+			return GetReflectionQuality();
+		case ESettingsType::TYPE_GlobalIllumination:
+			return GetGlobalIlluminationQuality();
+		case ESettingsType::TYPE_ViewDistance:
+			return GetViewDistanceQuality();
+		default:
+			return 0;
 	}
 }
 
@@ -308,7 +317,7 @@ int32 UEasySettingsSubsystem::GetShadowsQuality() const
 }
 
 void UEasySettingsSubsystem::SetWindowedMode(TEnumAsByte<EWindowMode::Type> InWindowMode,
-                                             bool bApply)
+	bool bApply)
 {
 	GetGameUserSettings()->SetFullscreenMode(InWindowMode);
 	if (bApply)
@@ -333,7 +342,7 @@ void UEasySettingsSubsystem::SetResolution(FIntPoint InResolution, bool bApply)
 }
 
 void UEasySettingsSubsystem::GetSupportedResolutions(TArray<FIntPoint>& OutResult,
-                                                     TEnumAsByte<EWindowMode::Type> InWindowMode)
+	TEnumAsByte<EWindowMode::Type> InWindowMode)
 {
 	if (InWindowMode == EWindowMode::Type::Windowed)
 	{
@@ -386,6 +395,9 @@ void UEasySettingsSubsystem::SaveContainer()
 	if (!IsValid(SettingsSetter))
 		return;
 
+	if (!UEasySettingsLib::ShouldUseContainer())
+		return;
+
 	// Prepare empty byte container
 	TArray<uint8> bytes;
 	FMemoryWriter writer(bytes);
@@ -400,6 +412,9 @@ void UEasySettingsSubsystem::SaveContainer()
 
 void UEasySettingsSubsystem::InitContainer()
 {
+	if (!UEasySettingsLib::ShouldUseContainer())
+		return;
+
 	// Destroy previous container
 	if (IsValid(SettingsSetter))
 	{
